@@ -1,4 +1,4 @@
-# tictac
+//tictac
 #include <iostream>
 using namespace std;
 
@@ -83,3 +83,51 @@ public:
                 if (board[i][j] != 'X' && board[i][j] != 'O')
                     return false;
         return true;
+        void play() {
+        int move;
+        bool gameOver = false;
+
+        while (!gameOver) {
+            displayBoard();
+            cout << "Player " << currentPlayer << ", enter your move (1-9): ";
+
+            cin >> move;
+
+            // Simple input validation
+            while (cin.fail() || !isValidMove(move)) {
+                cin.clear();
+                cin.ignore(1000, '\n');
+                cout << "Invalid move! Try again (1-9): ";
+                cin >> move;
+            }
+
+            makeMove(move);
+
+            if (checkWin()) {
+                displayBoard();
+                cout << "Player " << currentPlayer << " wins!\n";
+                gameOver = true;
+            } else if (isDraw()) {
+                displayBoard();
+                cout << "It's a draw!\n";
+                gameOver = true;
+            } else {
+                switchPlayer();
+            }
+        }
+    }
+};
+
+int main() {
+    char playAgain;
+    do {
+        TicTacToe game;
+        game.play();
+        cout << "Do you want to play again? (y/n): ";
+        cin >> playAgain;
+    } while (playAgain == 'y' || playAgain == 'Y');
+
+    cout << "Thanks for playing!\n";
+    return 0;
+}
+
